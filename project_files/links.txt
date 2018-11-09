@@ -1,1 +1,6 @@
 https://www.youtube.com/watch?v=6niqTuYFZLQ
+
+http://www.cs.utoronto.ca/~ilya/pubs/2011/LANG-RNN.pdf
+https://arxiv.org/pdf/1308.0850.pdf
+https://github.com/karpathy/char-rnn
+https://github.com/minimaxir/textgenrnn
