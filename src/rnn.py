@@ -31,22 +31,31 @@ class Model(tf.keras.Model):
         self.embedding = tf.keras.layers.Embedding(vocab_size, embedding_dim)
 
         if tf.test.is_gpu_available():
-            self.LSTM = tf.keras.layers.CuDNNLSTM(self.units, 
+            self.LSTM1 = tf.keras.layers.CuDNNLSTM(self.units, 
                                                 return_sequences=True, 
                                                 recurrent_initializer='glorot_uniform',
                                                 stateful=True)
+            # self.LSTM2 = tf.keras.layers.CuDNNLSTM(self.units, 
+            #                                     return_sequences=True, 
+            #                                     recurrent_initializer='glorot_uniform',
+            #                                     stateful=True)
         else:
-            self.LSTM = tf.keras.layers.LSTM(self.units, 
+            self.LSTM1 = tf.keras.layers.LSTM(self.units, 
                                             return_sequences=True, 
                                             recurrent_activation='sigmoid', 
                                             recurrent_initializer='glorot_uniform', 
                                             stateful=True)
+            # self.LSTM2 = tf.keras.layers.LSTM(self.units, 
+            #                                 return_sequences=True, 
+            #                                 recurrent_activation='sigmoid', 
+            #                                 recurrent_initializer='glorot_uniform', 
+            #                                 stateful=True)
 
         self.fc = tf.keras.layers.Dense(vocab_size)
 
     def call(self, x):
         embedding = self.embedding(x)
-        output = self.LSTM(embedding)
-        prediction = self.fc(output)
+        output1 = self.LSTM1(embedding)
+        prediction = self.fc(output1)
 
         return prediction
