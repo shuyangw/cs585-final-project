@@ -53,6 +53,7 @@ if __name__ == '__main__':
                     if line_count == 1e6:
                         break
 
+
                     if line:
                         pbar.set_postfix(file=f_name[-10:], refresh=False)
                         pbar.update(sys.getsizeof(line))
