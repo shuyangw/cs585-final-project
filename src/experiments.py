@@ -90,9 +90,6 @@ class Experiment(object):
                     losses.append(loss)
                     iterations.append(iteration)
                     iteration += 1
-            # saving (checkpoint) the model every 5 epochs
-            # if (epoch + 1) % 5 == 0:
-            #   model.save_weights(checkpoint_prefix)
 
             print ('Epoch {} Loss {:.4f}'.format(epoch+1, loss))
             print ('Time taken for 1 epoch {} sec\n'.format(time.time() - start))
@@ -129,6 +126,16 @@ class Experiment(object):
         print (start_string + ''.join(text_generated))
         
         if out:
-            output = open("output.txt", "w+", encoding="utf-8")
-            output.write(start_string + ''.join(text_generated))
+            count = 1
+            if not os.path.exists("outputs/output.txt"):
+                output = open("outputs/output.txt", "w+", encoding="utf-8")
+                output.write(start_string + ''.join(text_generated))
+                output.close()
+            else:
+                count = 0
+                while os.path.exists("outputs/output.txt" + str(count)):
+                    count += 1
+                output = open("outputs/output" + str(count) + ".txt", "w+", encoding="utf-8")
+                output.write(start_string + ''.join(text_generated))
+                output.close()
         
