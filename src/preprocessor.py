@@ -2,6 +2,7 @@ import os
 from tqdm import tqdm
 import json
 import sys
+import numpy as np
 
 class Preprocessor(object):
 	"""
@@ -28,7 +29,6 @@ class Preprocessor(object):
 	def process(self):
 		f_name = '../RC_2015-01'
 		f = open(f_name, 'r')
-		out = open('out.json', 'w+')
 
 		pure_out = open('pure_out.json', 'w+')
 		line_count = 0
@@ -68,8 +68,6 @@ class Preprocessor(object):
 		return comments_of_sub
 
 	def statistics(self, comments):
-		import numpy as np
-
 		scores = []
 		for comment in comments:
 			scores.append(comment[1])
@@ -82,10 +80,17 @@ class Preprocessor(object):
 				good_comments.append(comment)
 		return good_comments
 
+"""
+Example of usage
 
 p = Preprocessor("leagueoflegends", 1e7, 75)
 comments = p.process()
+out = open('out.txt', 'w+', encoding='utf-8')
+for c in comments:
+	out.write(c[0])
+out.close()
 good = p.statistics(comments)
 print(good)
 print(len(good))
 print(len(comments))
+"""
