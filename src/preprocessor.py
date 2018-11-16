@@ -44,7 +44,7 @@ class Preprocessor(object):
 
 					subreddit = comment_as_dict['subreddit']
 					if(subreddit == self.target_subreddit):
-						score = int(comment_as_dict['score'])
+						score = int(comment_as_dict['ups'])
 						comments_of_sub.append((comment_as_dict['body'], score))
 						# body = comment_as_dict['body'] 
 						# for words in body.split():
@@ -82,8 +82,6 @@ class Preprocessor(object):
 				good_comments.append(comment)
 		return good_comments
 
-"""
-Example usage:
 
 p = Preprocessor("leagueoflegends", 1e7, 75)
 comments = p.process()
@@ -91,4 +89,3 @@ good = p.statistics(comments)
 print(good)
 print(len(good))
 print(len(comments))
-"""
