@@ -126,16 +126,15 @@ class Experiment(object):
         print (start_string + ''.join(text_generated))
         
         if out:
-            count = 1
-            if not os.path.exists("outputs/output.txt"):
-                output = open("outputs/output.txt", "w+", encoding="utf-8")
+            if not os.path.exists("outputs/" + str(self.sample_size) + ".txt"):
+                output = open("outputs/" + str(self.sample_size) + ".txt", "w+", encoding="utf-8")
                 output.write(start_string + ''.join(text_generated))
                 output.close()
             else:
-                count = 0
-                while os.path.exists("outputs/output.txt" + str(count)):
+                count = 1
+                while os.path.exists("outputs/" + str(self.sample_size) + ".txt"):
                     count += 1
-                output = open("outputs/output" + str(count) + ".txt", "w+", encoding="utf-8")
+                output = open("outputs/" + str(self.sample_size) + str(count) + ".txt", "w+", encoding="utf-8")
                 output.write(start_string + ''.join(text_generated))
                 output.close()
         

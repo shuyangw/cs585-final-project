@@ -24,7 +24,6 @@ class Preprocessor(object):
 		self.target_subreddit = target_subreddit
 		self.break_limit = break_limit
 		self.threshold = threshold
-		# self.vocab = {}
 
 	def process(self):
 		f_name = '../RC_2015-01'
@@ -57,8 +56,9 @@ class Preprocessor(object):
 						# 		self.vocab[words]+=1
 					line_count += 1
 
-					if line_count > self.break_limit:
-						break
+					if self.break_limit != None:
+						if line_count > self.break_limit:
+							break
 
 					if line:
 						pbar.set_postfix(file=f_name[-10:], refresh=False)
