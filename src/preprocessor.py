@@ -20,52 +20,59 @@ class Preprocessor(object):
 	# NOTE: Refer to stream.py for implementation motivation                   #
 	############################################################################
 
-	def __init__(self, target_subreddit, break_limit, threshold):
+	def __init__(self, target_subreddit, break_limit, threshold, custom_file="",
+		custom=False
+	):
 		self.target_subreddit = target_subreddit
 		self.break_limit = break_limit
 		self.threshold = threshold
 
-	def process(self):
-		f_name = '../RC_2015-01'
-		f = open(f_name, 'r')
+	def process(self, custom_file="", custom=False):
+		print("Processing file...")
 
-		pure_out = open('pure_out.json', 'w+')
+		f_name = '../RC_2015-01'
+		if custom:
+			f_name = custom_file
+
+		try:
+			f = open(f_name, 'r')
+		except:
+			print("File not found!")
+			sys.exit()
+
 		line_count = 0
 		sizecounter = 0
 		sizecounter += os.stat(f_name).st_size
-		comments_of_sub = []
+		output = []
 		with tqdm(total=sizecounter,
 				unit='B', unit_scale=True, unit_divisor=1024) as pbar:
-			with open(f_name, 'rb') as fh:
-				for line in fh:
-					comment = json.loads(line)
-					comment_as_dict = dict(comment)
-
-					subreddit = comment_as_dict['subreddit']
-					if(subreddit == self.target_subreddit):
-						score = int(comment_as_dict['ups'])
-						comments_of_sub.append((comment_as_dict['body'], score))
-						# body = comment_as_dict['body'] 
-						# for words in body.split():
-						# 	comment_word_set = {}
-						# 	if(words not in comment_word_set):
-						# 		comment_word_set[words] = 1
-						# 	if(words not in self.vocab):
-						# 		self.vocab[words] = 1
-						# 	else:
-						# 		self.vocab[words]+=1
-					line_count += 1
-
-					if self.break_limit != None:
-						if line_count > self.break_limit:
-							break
-
-					if line:
-						pbar.set_postfix(file=f_name[-10:], refresh=False)
-						pbar.update(sys.getsizeof(line))
+			with open(f_name, 'r') as fh:
+				if custom:
+					for line in fh:
+						output.append(line)
+						if line:
+							pbar.set_postfix(file=f_name[-10:], refresh=False)
+							pbar.update(sys.getsizeof(line))
+				else:
+					for line in fh:
+						comment = json.loads(line)
+						comment_as_dict = dict(comment)
+						subreddit = comment_as_dict['subreddit']
+						if(subreddit == self.target_subreddit):
+							score = int(comment_as_dict['ups'])
+							output.append((comment_as_dict['body'], score))
+						line_count += 1
+						if self.break_limit != None:
+							if line_count > self.break_limit:
+								break
+						if line:
+							pbar.set_postfix(file=f_name[-10:], refresh=False)
+							pbar.update(sys.getsizeof(line))
 
 		f.close()
-		return comments_of_sub
+
+		print("Finished processing")
+		return output, line_count
 
 	def statistics(self, comments):
 		scores = []

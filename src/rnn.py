@@ -7,7 +7,19 @@ tf.enable_eager_execution()
 comment: score
 """
 def vectorize(comments):
-    #Create the vocab
+    # print("Vectorizing")
+    # vocab = set()
+    # #Create the vocab
+    # text = ""
+    # for comment in comments:
+    #     vocab = vocab.union(set(comment[0]))
+    # vocab = sorted(vocab)
+    # char2idx = {u:i for i, u in enumerate(vocab)}
+    # idx2char = np.asarray(vocab)
+    # text_as_int = np.array([char2idx[c] for c in text])
+
+    # print("Finished vectorizing")
+    # return vocab, char2idx, idx2char, text_as_int
 
     text = ""
     for comment in comments:
@@ -35,21 +47,12 @@ class Model(tf.keras.Model):
                                                 return_sequences=True, 
                                                 recurrent_initializer='glorot_uniform',
                                                 stateful=True)
-            # self.LSTM2 = tf.keras.layers.CuDNNLSTM(self.units, 
-            #                                     return_sequences=True, 
-            #                                     recurrent_initializer='glorot_uniform',
-            #                                     stateful=True)
         else:
             self.LSTM1 = tf.keras.layers.LSTM(self.units, 
                                             return_sequences=True, 
                                             recurrent_activation='sigmoid', 
                                             recurrent_initializer='glorot_uniform', 
                                             stateful=True)
-            # self.LSTM2 = tf.keras.layers.LSTM(self.units, 
-            #                                 return_sequences=True, 
-            #                                 recurrent_activation='sigmoid', 
-            #                                 recurrent_initializer='glorot_uniform', 
-            #                                 stateful=True)
 
         self.fc = tf.keras.layers.Dense(vocab_size)
 
